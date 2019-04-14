@@ -1,6 +1,7 @@
 # Can I run puppet to control stuff inside of a firewall ? 
 
-Hell yes.  Puppet agents can do one off connections to their hosts !
+Hell yes.  Puppet agents can do one off connections to their hosts !  Puppet agents can run in cron jobs pretty easily, and these jobs will just periodically check in with a master and do what needs to be done https://puppet.com/docs/puppet/5.5/man/agent.html  .  That said, a later implementation of this might actually use a master but that will be harder (...impossible...).
+
 
 # how ?
 
