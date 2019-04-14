@@ -1,3 +1,9 @@
+# Can I run puppet to control stuff inside of a firewall ? 
+
+Hell yes.
+
+# HOW ?
+
 1) Vagrant up your host, on one subnet that is private.
 2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
 
