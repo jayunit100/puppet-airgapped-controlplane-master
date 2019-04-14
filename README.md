@@ -2,6 +2,11 @@
 
 Hell yes.  Puppet agents can do one off connections to their hosts !  Puppet agents can run in cron jobs pretty easily, and these jobs will just periodically check in with a master and do what needs to be done https://puppet.com/docs/puppet/5.5/man/agent.html  .  That said, a later implementation of this might actually use a master but that will be harder (...impossible...).
 
+# Prerequisites 
+
+Understand  https://puppet.com/docs/puppet/5.3/architecture.html.  Note the difference between pure agent runs and master/agent runs.
+
+Again, note that these recipes also use `--test` so that the agent shuts down after running.  In production you might want something different.
 
 # how ?
 
