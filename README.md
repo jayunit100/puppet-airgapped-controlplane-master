@@ -1,6 +1,6 @@
 # Can I run puppet to control stuff inside of a firewall ? 
 
-Hell yes.
+Hell yes.  Puppet agents can do one off connections to their hosts !
 
 # how ?
 
