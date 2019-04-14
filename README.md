@@ -11,8 +11,17 @@ Puppet works via SSL authentication - so you need to make sure that the external
 Gladly, its super easy ... just run these two vagrant recipes , they are coupled - the agent has to run after the master is serving.  Note this is in flux, so they might have some kinks.
 
 1) Vagrant up your host, on one subnet that is private.
+```
+  config.vm.box = "centos/7"
+    ip = "10.168.33.#{i+6}"
+    config.vm.network :private_network, ip: ip
+   
+```
 2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
 
+```
+
+```
 # So what ?
 
 Youll notice the data center talks through `.1` to a the puppet agent, the .1 address represents
