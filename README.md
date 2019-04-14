@@ -1,7 +1,15 @@
-1) Vagrant up your host
-2) Vagrant up your 'datacenter'
+1) Vagrant up your host, on one subnet that is private.
+2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
 
-Youll notice the data center talks through .1 to a the puppet agent.
+Youll notice the data center talks through `.1` to a the puppet agent, the .1 address represents
+your hypervisor - i.e. the loop back to your host.  
+
+Now, in the vagrantfile for the hosts - you'll see that we bridge a port - thats the puppet master port !
+
+So, what happens is that the "datacenter" nodes talk through the .1 IP address into your puppet master, and can thus
+update their config via one way TCP requests. 
+
+Yay :)
 
 That is simulating your hypervisor or proxy into the agent.
 
