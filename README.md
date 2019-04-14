@@ -2,7 +2,7 @@
 
 Hell yes.
 
-# HOW ?
+# how ?
 
 1) Vagrant up your host, on one subnet that is private.
 2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
