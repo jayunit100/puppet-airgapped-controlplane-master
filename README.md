@@ -13,14 +13,16 @@ Gladly, its super easy ... just run these two vagrant recipes , they are coupled
 1) Vagrant up your host, on one subnet that is private.
 ```
   config.vm.box = "centos/7"
-    ip = "10.168.33.#{i+6}"
-    config.vm.network :private_network, ip: ip
-   
+    ip = "10.168.33.#{i+6}"   
 ```
+
+DO NOT CHANGE THE MEMORY SETTINGS, the puppet master wants alot of memory to start, otherwise it falls down.
+
 2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
 
 ```
-
+ ip = "10.168.33.#{i+6}"
+  config.vm.network :private_network, ip: ip
 ```
 # So what ?
 
