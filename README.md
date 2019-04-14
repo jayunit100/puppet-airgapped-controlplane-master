@@ -4,6 +4,12 @@ Hell yes.
 
 # how ?
 
+Puppet works via SSL authentication - so you need to make sure that the external master is named using an internal IP address that can work as a proxy.  In this case, you get that in virtualbox on the hypervisor.  In a datacenter, you might get that through another type of proxy.
+
+# PROVE IT
+
+Gladly, its super easy ... just run these two vagrant recipes , they are coupled - the agent has to run after the master is serving.  Note this is in flux, so they might have some kinks.
+
 1) Vagrant up your host, on one subnet that is private.
 2) Vagrant up your 'datacenter', note that its on a *totally different subnet, also private*
 
