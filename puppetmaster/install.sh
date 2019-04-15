@@ -11,3 +11,8 @@ echo "waiting to run puppet...."
 sleep 2
 sudo /bin/puppet resource package puppetserver ensure=latest
 systemctl restart puppetserver
+
+# This could be done w/ an autosign.conf file.
+until puppet cert sign slave1.local ; do 
+    echo "waiting for slave1.local to check in, then will autosign"
+done
