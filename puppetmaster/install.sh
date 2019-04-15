@@ -14,5 +14,10 @@ systemctl restart puppetserver
 
 # This could be done w/ an autosign.conf file.
 until puppet cert sign slave1.local ; do 
-    echo "waiting for slave1.local to check in, then will autosign"
+    echo "waiting 10 seconds for slave1.local to check in, then will autosign"
+    sleep 10
 done
+
+echo "Signed the cert !"
+
+puppet cert list
