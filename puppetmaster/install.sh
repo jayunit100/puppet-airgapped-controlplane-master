@@ -1,16 +1,22 @@
 #!/bin/bash
+if [ "$(whoami)" != "root" ]
+then
+   echo "not running as `whoami`, instead, running as root, so $puppet commands work!"
+   sudo su -s "$0"
+   exit
+fi
 
+puppet="/opt/puppetlabs/bin/puppet"
 cat master.local > /etc/hostname
 echo "127.0.0.1		puppet" > /etc/hosts
 
-alias puppet=/opt/puppetlabs/bin/puppet
 function pre() {
-	sudo hostname master.local
+	hostname master.local
 	rpm -Uvh https://yum.puppetlabs.com/puppet6/puppet-release-el-7.noarch.rpm
 	yum install -y puppetserver
 	echo "waiting to run puppet...."
 	sleep 2
-	sudo /opt/puppetlabs/bin/puppet resource package puppetserver ensure=latest
+	$puppet resource package puppetserver ensure=latest
 	systemctl restart puppetserver
 	
 }
@@ -20,9 +26,9 @@ function inject_nodelet() {
 }
 
 function post() {
-
-	sudo /opt/puppetlabs/bin/puppet module install puppetlabs-docker --version 3.5.0
-	sudo puppet module install puppetlabs-ntp
+	whoami
+	$puppet module install puppetlabs-docker --version 3.5.0
+	$puppet module install puppetlabs-ntp
 	# This could be done w/ an autosign.conf file.
 	until /opt/puppetlabs/bin/puppetserver ca sign --certname=slave1.local ; do
 		echo "couldnt find slave1.local cert, will try to sign again in a few"
