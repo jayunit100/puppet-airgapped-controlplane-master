@@ -2,17 +2,39 @@
 
 Hell yes.  Puppet agents can do one off connections to their hosts !  Puppet agents can run in cron jobs pretty easily, and these jobs will just periodically check in with a master and do what needs to be done https://puppet.com/docs/puppet/5.5/man/agent.html  .  That said, a later implementation of this might actually use a master but that will be harder (...impossible...).
 
+The repo implements a declarative platform which, using one way network egress, manages:
+
+- package installations on nodes
+- shipping of binaries to nodes
+- running executable one of commands on nodes
+
+## master
+
+The master contains all infrastructure configuration, this includes directives, for example, for specific
+nodes which might need docker installed.  
+
+It is completely bootstrapped via vagrant, and automatically signs all incoming certs so that new hosts
+can be instantly automatically configured.
+
+## host-datacenter
+
+The host data center simulates a cluster of machines which might need to be controlled by the master.  It has
+its own vagrant file.  This file is hardcoded to talk to the master over a one way TCP connection.
+
+
+
 # Prerequisites 
 
 Understand  https://puppet.com/docs/puppet/5.3/architecture.html.  Note the difference between pure agent runs and master/agent runs.
-
 Again, note that these recipes also use `--test` so that the agent shuts down after running.  In production you might want something different.
 
-# how ?
+## How does the master control hosts ?
+
+Hosts check in periodically with the master and get their latest configuration, as shown in their respective install.sh.
 
 Puppet works via SSL authentication - so you need to make sure that the external master is named using an internal IP address that can work as a proxy.  In this case, you get that in virtualbox on the hypervisor.  In a datacenter, you might get that through another type of proxy.
 
-# PROVE IT
+# Prove it
 
 Gladly, its super easy ... just run these two vagrant recipes , they are coupled - the agent has to run after the master is serving.  Note this is in flux, so they might have some kinks.
 
@@ -30,6 +52,7 @@ DO NOT CHANGE THE MEMORY SETTINGS, the puppet master wants alot of memory to sta
  ip = "10.168.33.#{i+6}"
   config.vm.network :private_network, ip: ip
 ```
+
 # So what ?
 
 Youll notice the data center talks through `.1` to a the puppet agent, the .1 address represents
