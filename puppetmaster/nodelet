@@ -1,0 +1,14 @@
+node default {
+    class { 'ntp':
+          servers => ['nist-time-server.eoni.com','nist1-lv.ustiming.org','ntp-nist.ldsbc.edu']
+    }
+}
+
+node slave1.local {
+        class { 'docker':
+          use_upstream_package_source => false,
+          service_overrides_template  => false,
+          docker_ce_package_name      => 'docker',
+        }
+}
+
