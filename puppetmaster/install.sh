@@ -1,23 +1,38 @@
 #!/bin/bash
-# YUM INSTALL PUPPET MASTER 
 
 cat master.local > /etc/hostname
+echo "127.0.0.1		puppet" > /etc/hosts
 
-sudo hostname master.local
-rpm -Uvh https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+alias puppet=/opt/puppetlabs/bin/puppet
+function pre() {
+	sudo hostname master.local
+	rpm -Uvh https://yum.puppetlabs.com/puppet6/puppet-release-el-7.noarch.rpm
+	yum install -y puppetserver
+	echo "waiting to run puppet...."
+	sleep 2
+	sudo /opt/puppetlabs/bin/puppet resource package puppetserver ensure=latest
+	systemctl restart puppetserver
+	
+}
 
-yum install -y puppetserver
-echo "waiting to run puppet...."
-sleep 2
-sudo /bin/puppet resource package puppetserver ensure=latest
-systemctl restart puppetserver
+function inject_nodelet() {
+	cp /vagrant/nodelet /etc/puppetlabs/code/environments/production/manifests/site.pp
+}
 
-# This could be done w/ an autosign.conf file.
-until puppet cert sign slave1.local ; do 
-    echo "waiting 10 seconds for slave1.local to check in, then will autosign"
-    sleep 10
-done
+function post() {
 
+	sudo /opt/puppetlabs/bin/puppet module install puppetlabs-docker --version 3.5.0
+	sudo puppet module install puppetlabs-ntp
+	# This could be done w/ an autosign.conf file.
+	until /opt/puppetlabs/bin/puppetserver ca sign --certname=slave1.local ; do
+		echo "couldnt find slave1.local cert, will try to sign again in a few"
+		sleep 10
+	done
+}
+
+pre
+inject_nodelet
+post
 echo "Signed the cert !"
 
-puppet cert list
+
