@@ -1,6 +1,13 @@
-# Can I run puppet to control stuff inside of a firewall ? 
+# Can I securely run puppet to control stuff inside of a firewall ?
 
-Hell yes.  Puppet agents can do one off connections to their hosts !  Puppet agents can run in cron jobs pretty easily, and these jobs will just periodically check in with a master and do what needs to be done https://puppet.com/docs/puppet/5.5/man/agent.html  .  That said, a later implementation of this might actually use a master but that will be harder (...impossible...).
+
+
+Yes sir!  
+
+- Puppet comes bundled with a CA which can be used
+To sign certificates from any incoming connection. In this repo we automate that.
+- In the real world you might use another mechanism. Easy to invoke signing any way you want via the API or command line!
+- Puppet agents can do one off connections to their hosts !  Puppet agents can run in cron jobs pretty easily, and these jobs will just periodically check in with a master and do what needs to be done https://puppet.com/docs/puppet/5.5/man/agent.html  .  That said, a later implementation of this might actually use a master but that will be harder (...impossible...).
 
 The repo implements a declarative platform which, using one way network egress, manages:
 
